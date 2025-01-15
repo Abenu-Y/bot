@@ -15,7 +15,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # ]
     keyboard = [
         # [InlineKeyboardButton("Open Web App", web_app=WebAppInfo(url="https://abenuy.com/"))]
-        [InlineKeyboardButton("Open Web App", web_app=WebAppInfo(url="https://pms-1.vercel.app/"))]
+        [InlineKeyboardButton("Open Web App", web_app=WebAppInfo(url="https://evant4forum.netlify.app/"))]
     ]
     
     reply_markup = InlineKeyboardMarkup(keyboard)
