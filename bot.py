@@ -7,6 +7,9 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 # Load environment variables from the .env file
 load_dotenv()
 BOT_TOKEN = os.getenv("BOT_TOKEN")
+PLATFORM = os.getenv("PLATFORM")
+
+print(PLATFORM)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
