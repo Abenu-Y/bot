@@ -37,8 +37,8 @@
 
 
 
-
 import os
+import asyncio
 from dotenv import load_dotenv
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
@@ -58,7 +58,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     reply_markup = InlineKeyboardMarkup(keyboard)
     await update.message.reply_text("Click the button to open the app!", reply_markup=reply_markup)
 
-def main():
+async def main():
     # Create an Application instance
     application = ApplicationBuilder().token(BOT_TOKEN).build()
 
@@ -66,7 +66,7 @@ def main():
     application.add_handler(CommandHandler("start", start))
 
     # Run the bot with long polling
-    application.run_polling()
+    await application.run_polling()
 
 # Add a simple route to bind to a port (Render expects web services to bind to a port)
 @app.route('/')
@@ -74,8 +74,15 @@ def index():
     return "Telegram bot is running!"
 
 if __name__ == '__main__':
-    # Start the Flask app and also run the bot in the background
+    # Start the Flask app and also run the bot in the background using asyncio
     from threading import Thread
-    thread = Thread(target=main)
-    thread.start()
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 8000)))
+
+    # Run the Flask app in a separate thread
+    def run_flask():
+        app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 8000)))
+
+    flask_thread = Thread(target=run_flask)
+    flask_thread.start()
+
+    # Run the Telegram bot in the main thread with asyncio
+    asyncio.run(main())
